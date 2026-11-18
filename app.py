@@ -9,9 +9,7 @@ import json
 from datetime import date
 from typing import List, Dict, Any
 import streamlit as st
-import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
 from dotenv import load_dotenv
 
 # Load local environment variables if available
@@ -589,24 +587,24 @@ with tab_health:
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("##### 🥧 Monthly Budget Distribution")
-        budget_df = pd.DataFrame([
-            {"Category": "Fixed Essentials", "Amount": user_profile.fixed_expenses},
-            {"Category": "Variable Spends", "Amount": user_profile.variable_expenses},
-            {"Category": "Net Surplus Capacity", "Amount": max(0.0, engine_output.savings_capacity)},
-        ])
+        labels = ["Fixed Essentials", "Variable Spends", "Net Surplus Capacity"]
+        values = [user_profile.fixed_expenses, user_profile.variable_expenses, max(0.0, engine_output.savings_capacity)]
+        colors = ["#1E3A8A", "#F59E0B", "#059669"]
         if engine_output.savings_capacity < 0:
-            budget_df = pd.DataFrame([
-                {"Category": "Fixed Essentials", "Amount": user_profile.fixed_expenses},
-                {"Category": "Variable Spends", "Amount": user_profile.variable_expenses},
-                {"Category": "Monthly Deficit", "Amount": abs(engine_output.savings_capacity)},
-            ])
+            labels = ["Fixed Essentials", "Variable Spends", "Monthly Deficit"]
+            values = [user_profile.fixed_expenses, user_profile.variable_expenses, abs(engine_output.savings_capacity)]
+            colors = ["#1E3A8A", "#F59E0B", "#DC2626"]
 
-        pie_fig = px.pie(
-            budget_df,
-            values="Amount",
-            names="Category",
-            color_discrete_sequence=["#1E3A8A", "#F59E0B", "#059669" if engine_output.savings_capacity >= 0 else "#DC2626"],
-            hole=0.45,
+        pie_fig = go.Figure(
+            data=[
+                go.Pie(
+                    labels=labels,
+                    values=values,
+                    hole=0.45,
+                    marker=dict(colors=colors),
+                    textinfo="label+percent",
+                )
+            ]
         )
         pie_fig.update_layout(height=280, margin=dict(l=10, r=10, t=20, b=10))
         st.plotly_chart(pie_fig, use_container_width=True)
@@ -649,7 +647,7 @@ with tab_health:
                 "Type": "High-Risk Debt" if d["is_high_interest"] else "Standard Debt",
                 "Action Required": d["action"],
             })
-        st.dataframe(pd.DataFrame(debt_rows), use_container_width=True, hide_index=True)
+        st.dataframe(debt_rows, use_container_width=True)
 
 
 # ==================== TAB 4: RECOMMENDATIONS & ACTIONS ====================
@@ -774,26 +772,12 @@ with tab_simulator:
             sip_curve.append(calculate_future_value_sip(total_monthly_sim, m, DEFAULT_ASSUMPTIONS["index_fund_sip"]))
             gold_curve.append(calculate_future_value_sip(total_monthly_sim, m, DEFAULT_ASSUMPTIONS["gold"]))
 
-        chart_df = pd.DataFrame({
-            "Years": year_points,
-            "Total Principal Invested": principal_curve,
-            "Bank FD (7%)": fd_curve,
-            "Gold SGB / ETF (9%)": gold_curve,
-            "Index Fund SIP (12%)": sip_curve,
-        })
+        growth_fig = go.Figure()
+        growth_fig.add_trace(go.Scatter(x=year_points, y=principal_curve, mode="lines+markers", name="Total Principal Invested", line=dict(color="#94A3B8", dash="dash")))
+        growth_fig.add_trace(go.Scatter(x=year_points, y=fd_curve, mode="lines+markers", name="Bank FD (7%)", line=dict(color="#3B82F6")))
+        growth_fig.add_trace(go.Scatter(x=year_points, y=gold_curve, mode="lines+markers", name="Gold SGB / ETF (9%)", line=dict(color="#F59E0B")))
+        growth_fig.add_trace(go.Scatter(x=year_points, y=sip_curve, mode="lines+markers", name="Index Fund SIP (12%)", line=dict(color="#059669", width=3)))
 
-        growth_fig = px.line(
-            chart_df,
-            x="Years",
-            y=["Total Principal Invested", "Bank FD (7%)", "Gold SGB / ETF (9%)", "Index Fund SIP (12%)"],
-            color_discrete_map={
-                "Total Principal Invested": "#94A3B8",
-                "Bank FD (7%)": "#3B82F6",
-                "Gold SGB / ETF (9%)": "#F59E0B",
-                "Index Fund SIP (12%)": "#059669",
-            },
-            markers=True,
-        )
         growth_fig.update_layout(
             height=320,
             yaxis_title="Future Accumulated Value (₹)",
