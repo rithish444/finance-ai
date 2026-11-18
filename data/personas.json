@@ -1,0 +1,117 @@
+{
+  "personas": [
+    {
+      "id": "student",
+      "name": "Aarav Sharma",
+      "role": "College Final-Year Intern",
+      "city": "Bengaluru",
+      "tagline": "Starting small: stipend earner building first investment habits",
+      "monthly_income": 18000,
+      "fixed_expenses": 8000,
+      "variable_expenses": 6000,
+      "existing_savings": 15000,
+      "desired_monthly_savings": 4000,
+      "dependents": 0,
+      "is_variable_income": false,
+      "salary_day": 5,
+      "quiz_answers": [2, 2, 2, 2, 2],
+      "debts": [],
+      "goals": [
+        {
+          "name": "Work Laptop",
+          "target_amount": 75000,
+          "target_date": "2028-03-01",
+          "current_saved": 5000
+        },
+        {
+          "name": "First Bike",
+          "target_amount": 90000,
+          "target_date": "2029-06-01",
+          "current_saved": 0
+        }
+      ]
+    },
+    {
+      "id": "salaried",
+      "name": "Priya Venkatesh",
+      "role": "Salaried Software Engineer",
+      "city": "Chennai",
+      "tagline": "Good salary, but high-interest credit card debt leaking wealth",
+      "monthly_income": 85000,
+      "fixed_expenses": 32000,
+      "variable_expenses": 18000,
+      "existing_savings": 120000,
+      "desired_monthly_savings": 30000,
+      "dependents": 2,
+      "is_variable_income": false,
+      "salary_day": 1,
+      "quiz_answers": [3, 3, 2, 3, 3],
+      "debts": [
+        {
+          "name": "Credit Card Outstanding",
+          "outstanding_amount": 45000,
+          "interest_rate_percent": 38.0,
+          "monthly_emi": 4500
+        },
+        {
+          "name": "Education Loan",
+          "outstanding_amount": 220000,
+          "interest_rate_percent": 8.5,
+          "monthly_emi": 5500
+        }
+      ],
+      "goals": [
+        {
+          "name": "Emergency Cushion Gap",
+          "target_amount": 250000,
+          "target_date": "2027-12-01",
+          "current_saved": 120000
+        },
+        {
+          "name": "House Downpayment",
+          "target_amount": 1500000,
+          "target_date": "2031-12-01",
+          "current_saved": 0
+        }
+      ]
+    },
+    {
+      "id": "shop_owner",
+      "name": "Rajesh Patel",
+      "role": "Kirana & Grocery Store Owner",
+      "city": "Ahmedabad",
+      "tagline": "Variable business income with family dependents needing safe growth",
+      "monthly_income": 65000,
+      "fixed_expenses": 24000,
+      "variable_expenses": 16000,
+      "existing_savings": 90000,
+      "desired_monthly_savings": 20000,
+      "dependents": 3,
+      "is_variable_income": true,
+      "salary_day": 10,
+      "quiz_answers": [1, 1, 2, 1, 1],
+      "debts": [
+        {
+          "name": "Business Working Capital Loan",
+          "outstanding_amount": 150000,
+          "interest_rate_percent": 14.5,
+          "monthly_emi": 8000
+        }
+      ],
+      "goals": [
+        {
+          "name": "Children Higher Education",
+          "target_amount": 1000000,
+          "target_date": "2034-06-01",
+          "current_saved": 50000
+        },
+        {
+          "name": "Store Inventory Expansion",
+          "target_amount": 200000,
+          "target_date": "2028-10-01",
+          "current_saved": 0
+        }
+      ]
+    }
+  ]
+}
